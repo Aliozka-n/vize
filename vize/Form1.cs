@@ -15,10 +15,12 @@ namespace vize
     {
 
         int baslangic = 0;
-        
+        int tur = 0;
+        // haberler listem
+        List<string> haberler = new List<string>();
 
 
-   
+
 
 
 
@@ -29,22 +31,39 @@ namespace vize
 
         public void yazdir()
         {
-            // haberler listem
-            List<string> haberler = new List<string>();
-
+            
 
             XmlTextReader haber = new XmlTextReader("https://www.ntv.com.tr/son-dakika.rss");
 
-
-            while (haber.Read()) // haer okunduğu sürece
+            while (haber.Read()) // haber okunduğu sürece
             {
                  if (haber.Name == "title")
                  {
-                   haberler.Add(haber.ToString()); // listeme ekle
-                   listBox1.Items.Add(haber.ReadString()); // list box a ekleme
-                 }
+                   String deger = haber.ReadString(); 
+
+                   if (tur == 0) //program  başladığında kayıtları ekle
+                       { 
+                        haberler.Add(deger); // listeme ekle
+                        listBox1.Items.Add(deger); // list box a ekleme
+                       }
+                    else // kayıtlardan sonra
+                    {
+                        if (haberler.Contains(deger))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            MessageBox.Show(deger,"Yeni haber"); // Yeni haber gelince uyar
+                            haberler.Add(deger); // listeme ekle
+                            listBox1.Items.Add(deger); // list box a ekleme
+                          
+                        }
+                    }
+                }
             }
 
+            tur = 1;
             
         }
         
