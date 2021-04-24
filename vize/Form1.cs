@@ -14,6 +14,7 @@ namespace vize
 {
     public partial class Form1 : Form
     {
+        StreamWriter sw;
 
         int baslangic = 0;  // zaman için
         int tur = 0;       // ilk verileri alırken sorun yaşamamak için
@@ -23,12 +24,16 @@ namespace vize
         // haberler listem
         List<string> haberler = new List<string>();
 
+        // array list
+        
+
         // yazı boyutu
         int boyut = 9; 
 
         public Form1()
         {
             InitializeComponent();
+            dosyaolustur();
         }
 
         public void yazdir()
@@ -43,24 +48,42 @@ namespace vize
                  {
                    String deger = haber.ReadString(); 
 
-                   if (tur == 0) //program  başladığında kayıtları ekle
-                       { 
-                        haberler.Add(deger); // listeme ekle
-                        listBox1.Items.Add(deger); // list box a ekleme
-                       }
+                    if (tur == 0) //program  başladığında kayıtları ekle
+                    { 
+                            haberler.Add(deger+"\n"); // listeme ekle
+                            listBox1.Items.Add(deger); // list box a ekleme
+
+                            // txt dosyası işlemleri
+
+                            string[] satir = File.ReadAllLines(@"D:\\Haberler.txt");
+                        
+                        
+                            if (satir.Contains(deger))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                File.AppendAllText(@"D:\\Haberler.txt", deger + "\n");
+                                MessageBox.Show(deger, "Yeni haber geldi ve eklendiiii");
+                                ensonhaber = deger;
+                            }
+                        
+
+                    }
                     else // kayıtlardan sonra
                     {
-                        if (haberler.Contains(deger)) //listemdeki değerlerden farklı mı
+                        if (haberler.Contains(deger+"\n")) //listemdeki değerlerden farklı mı
                         {
                             continue;
                         }
                         else // listemdeki değerlerden farklı geldiyse
                         {
                             ensonhaber = deger;
-                            MessageBox.Show(deger,"Yeni haber"); // Yeni haber gelince uyar
-                            haberler.Add(deger); // listeme ekle
+                            MessageBox.Show(deger,"Yeni haber geldi "); // Yeni haber gelince uyar
+                            haberler.Add(deger+"\n"); // listeme ekle
                             listBox1.Items.Add(deger); // list box a ekleme
-                          
+                            File.AppendAllText(@"D:\\Haberler.txt", deger + "\n");
                         }
                     }
                 }
@@ -127,33 +150,34 @@ namespace vize
 
         }
 
-        StreamWriter sw;
-        string adres= "";
+        
 
         private void button6_Click(object sender, EventArgs e)
         {
-            // adres seçildimi
-            if (adres != "")
-            {
-                // varsayılan dosya ismi -> Haberler.txt
-                sw = File.CreateText(adres + "\\" + "Haberler.txt"); // istenilen adrese dosyayı ekle
-                sw.Close(); // dosyayı kapat
 
-                MessageBox.Show("belge oluşturuldu");
-            }
-            else
-            {
-                MessageBox.Show("Lütfen bir yol seçin");
-            }
+
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if(folderBrowserDialog1.ShowDialog()==DialogResult.OK)
-            {
-                adres = folderBrowserDialog1.SelectedPath.ToString();
-                textBox2.Text = adres;
+            dosyaolustur();
+        }
+
+
+
+        // txt dosyasını oluştur
+        public void dosyaolustur()
+        {
+            String dosya = "D:\\Haberler.txt";
+
+            if (File.Exists(dosya) == false) // daha onceden dosya var mı yok mu
+            { 
+            // varsayılan dosya ismi Haberler.txt
+            sw = File.CreateText("D:\\Haberler.txt"); // d klasoru altında haberler.txt
+            sw.Close(); // dosyayı kapat
             }
         }
+
+ 
     }
 }
