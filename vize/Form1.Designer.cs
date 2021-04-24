@@ -102,6 +102,7 @@ namespace vize
             // 
             // textBox1
             // 
+            this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(12, 348);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -146,9 +147,11 @@ namespace vize
             this.button6.TabIndex = 9;
             this.button6.Text = "Kaydet";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // textBox2
             // 
+            this.textBox2.Enabled = false;
             this.textBox2.Location = new System.Drawing.Point(483, 348);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";

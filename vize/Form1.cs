@@ -128,7 +128,24 @@ namespace vize
         }
 
         StreamWriter sw;
-        string belgeadi,adres;
+        string adres= "";
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            // adres seçildimi
+            if (adres != "")
+            {
+                // varsayılan dosya ismi -> Haberler.txt
+                sw = File.CreateText(adres + "\\" + "Haberler.txt"); // istenilen adrese dosyayı ekle
+                sw.Close(); // dosyayı kapat
+
+                MessageBox.Show("belge oluşturuldu");
+            }
+            else
+            {
+                MessageBox.Show("Lütfen bir yol seçin");
+            }
+        }
 
         private void button5_Click(object sender, EventArgs e)
         {
