@@ -14,15 +14,16 @@ namespace vize
     public partial class Form1 : Form
     {
 
-        int baslangic = 0;
-        int tur = 0;
+        int baslangic = 0;  // zaman için
+        int tur = 0;       // ilk verileri alırken sorun yaşamamak için
+
+        string ensonhaber = "Yeni bir haber gelmedi";
+
         // haberler listem
         List<string> haberler = new List<string>();
 
-
-
-
-
+        // yazı boyutu
+        int boyut = 14;
 
         public Form1()
         {
@@ -48,12 +49,13 @@ namespace vize
                        }
                     else // kayıtlardan sonra
                     {
-                        if (haberler.Contains(deger))
+                        if (haberler.Contains(deger)) //listemdeki değerlerden farklı mı
                         {
                             continue;
                         }
-                        else
+                        else // listemdeki değerlerden farklı geldiyse
                         {
+                            ensonhaber = deger;
                             MessageBox.Show(deger,"Yeni haber"); // Yeni haber gelince uyar
                             haberler.Add(deger); // listeme ekle
                             listBox1.Items.Add(deger); // list box a ekleme
@@ -63,7 +65,7 @@ namespace vize
                 }
             }
 
-            tur = 1;
+            tur = 1; // ilk  veriler alındı
             
         }
         
@@ -75,14 +77,49 @@ namespace vize
         }
 
         public void timer1_Tick(object sender, EventArgs e)
-        { 
-            baslangic++;
-            label1.Text = baslangic.ToString();
-
-            if(baslangic % 10 == 0) // her 10 saniyede bir
+        {
+            if (tur != 0)
             {
-                yazdir();
+                baslangic++;
+                label1.Text = baslangic.ToString();
+
+                if (baslangic % 10 == 0) // her 10 saniyede bir
+                {
+                    yazdir();
+                }
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = ensonhaber;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            boyut += 1;
+            if (boyut <= 5)
+            {
+                listBox1.Font = new Font("Arial", 6);
+            }
+            else
+            {
+                listBox1.Font = new Font("Arial", boyut);
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            boyut -= 1;
+            if (boyut <= 5)
+            {
+                listBox1.Font = new Font("Arial", 5);
+            }
+            else
+            {
+                listBox1.Font = new Font("Arial", boyut);
+            }
+
         }
     }
 }
