@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using System.IO;
 
 namespace vize
 {
@@ -23,7 +24,7 @@ namespace vize
         List<string> haberler = new List<string>();
 
         // yazı boyutu
-        int boyut = 14;
+        int boyut = 9; 
 
         public Form1()
         {
@@ -114,12 +115,28 @@ namespace vize
             if (boyut <= 5)
             {
                 listBox1.Font = new Font("Arial", 5);
+                if (boyut<5) // boyutu en az 5 olarak ayarlama ve Büyüt tusundaki hata düzeltmesi
+                {
+                    boyut = 5; // sayının azalmasını engelleme ve buyut tuşunun doğru çalışması
+                }
             }
             else
             {
                 listBox1.Font = new Font("Arial", boyut);
             }
 
+        }
+
+        StreamWriter sw;
+        string belgeadi,adres;
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if(folderBrowserDialog1.ShowDialog()==DialogResult.OK)
+            {
+                adres = folderBrowserDialog1.SelectedPath.ToString();
+                textBox2.Text = adres;
+            }
         }
     }
 }
