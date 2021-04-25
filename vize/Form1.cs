@@ -28,6 +28,7 @@ namespace vize
         // yazı boyutu
         int boyut = 9;
 
+        
 
         public Form1()
         {
@@ -37,7 +38,7 @@ namespace vize
         public void yazdir()
         {
             //https://www.ntv.com.tr/son-dakika.rss
-            // https://www.ntv.com.tr/spor.rss
+            // https://www.ntv.com.tr/spor.rss -> test için  değiştirilebilir link
 
             XmlTextReader haber = new XmlTextReader("https://www.ntv.com.tr/son-dakika.rss");
 
@@ -60,7 +61,6 @@ namespace vize
                         {
                             if (satir.Contains(deger))
                             {
-                                //ensonhaber = "içinde veri var";
                                 continue;
                             }
                             else
@@ -71,30 +71,29 @@ namespace vize
                             }
                         }
 
-                        else
+                        else // içinde haber yoksa 
                         {
                             File.AppendAllText(@"D:\\Haberler.txt", deger + "\n");
                         }
 
                     }
 
-                else // kayıtlardan sonra
-                {
-                    string[] satir = File.ReadAllLines(@"D:\\Haberler.txt");
+                    else // ilk turdan sonra 
+                    {
 
-                    if (haberler.Contains(deger)) //listemdeki değerlerden farklı mı
-                    {
-                            continue;
+                        if (haberler.Contains(deger)) //listemdeki değerlerden farklı mı
+                        {
+                                continue;
+                        }
+                        else // listemdeki değerlerden farklı geldiyse
+                        {
+                                ensonhaber = deger;
+                                MessageBox.Show(deger, "Yeni haber geldi "); // Yeni haber gelince uyar
+                                haberler.Add(deger + "\n"); // listeme ekle
+                                listBox1.Items.Add(deger); // list box a ekleme
+                                File.AppendAllText(@"D:\\Haberler.txt", deger + "\n");
+                        }
                     }
-                    else // listemdeki değerlerden farklı geldiyse
-                    {
-                            ensonhaber = deger;
-                            MessageBox.Show(deger, "Yeni haber geldi "); // Yeni haber gelince uyar
-                            haberler.Add(deger + "\n"); // listeme ekle
-                            listBox1.Items.Add(deger); // list box a ekleme
-                            File.AppendAllText(@"D:\\Haberler.txt", deger + "\n");
-                    }
-                }
 
                 }
             }
@@ -117,7 +116,7 @@ namespace vize
                 baslangic++;
                 label1.Text = baslangic.ToString();
 
-                if (baslangic % 10 == 0) // her 10 saniyede bir
+                if (baslangic % 30 == 0) // her 30 saniyede bir
                 {
                     yazdir();
                 }
@@ -177,6 +176,17 @@ namespace vize
         private void Form1_Load(object sender, EventArgs e)
         {
             dosyaolustur();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Kullanım Klavuzu:\nHaberleri getiere basmadan haberler gelmez ve kayıt olmaz \n \nSon haber butonu en son gelen yeni haberi verir\n\nMetin büyütme ve küçültme butonları gelen haberlerin boyutunu\ndeğiştirir\n\ngeçen süre ise haberleri getir butonuna basıldığından itibaren\nkaç sn geçmiş onu kontrol eder");
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Bilgisayarınızın D sürücüsünde haberler.txt \ndosyası açıldı kontolleri oradan yapabilirsiniz");
         }
     }
 }
