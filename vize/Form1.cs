@@ -24,42 +24,43 @@ namespace vize
         // haberler listem
         List<string> haberler = new List<string>();
 
-        // array list
-        
 
         // yazı boyutu
-        int boyut = 9; 
+        int boyut = 9;
+
 
         public Form1()
         {
             InitializeComponent();
-            dosyaolustur();
         }
 
         public void yazdir()
         {
-            
+            //https://www.ntv.com.tr/son-dakika.rss
+            // https://www.ntv.com.tr/spor.rss
 
             XmlTextReader haber = new XmlTextReader("https://www.ntv.com.tr/son-dakika.rss");
 
             while (haber.Read()) // haber okunduğu sürece
             {
-                 if (haber.Name == "title")
-                 {
-                   String deger = haber.ReadString(); 
+                if (haber.Name == "title")
+                {
+                    String deger = haber.ReadString();
 
                     if (tur == 0) //program  başladığında kayıtları ekle
-                    { 
-                            haberler.Add(deger+"\n"); // listeme ekle
-                            listBox1.Items.Add(deger); // list box a ekleme
+                    {
+                        haberler.Add(deger); // listeme ekle
+                        listBox1.Items.Add(deger); // list box a ekleme
 
-                            // txt dosyası işlemleri
+                        // txt dosyası işlemleri
 
-                            string[] satir = File.ReadAllLines(@"D:\\Haberler.txt");
-                        
-                        
+                        string[] satir = File.ReadAllLines(@"D:\\Haberler.txt");
+
+                        if (satir.Length > 10) // daha onceden haber varsa içinde 
+                        {
                             if (satir.Contains(deger))
                             {
+                                //ensonhaber = "içinde veri var";
                                 continue;
                             }
                             else
@@ -68,31 +69,40 @@ namespace vize
                                 MessageBox.Show(deger, "Yeni haber geldi ve eklendiiii");
                                 ensonhaber = deger;
                             }
-                        
-
-                    }
-                    else // kayıtlardan sonra
-                    {
-                        if (haberler.Contains(deger+"\n")) //listemdeki değerlerden farklı mı
-                        {
-                            continue;
                         }
-                        else // listemdeki değerlerden farklı geldiyse
+
+                        else
                         {
-                            ensonhaber = deger;
-                            MessageBox.Show(deger,"Yeni haber geldi "); // Yeni haber gelince uyar
-                            haberler.Add(deger+"\n"); // listeme ekle
-                            listBox1.Items.Add(deger); // list box a ekleme
                             File.AppendAllText(@"D:\\Haberler.txt", deger + "\n");
                         }
+
                     }
+
+                else // kayıtlardan sonra
+                {
+                    string[] satir = File.ReadAllLines(@"D:\\Haberler.txt");
+
+                    if (haberler.Contains(deger)) //listemdeki değerlerden farklı mı
+                    {
+                            continue;
+                    }
+                    else // listemdeki değerlerden farklı geldiyse
+                    {
+                            ensonhaber = deger;
+                            MessageBox.Show(deger, "Yeni haber geldi "); // Yeni haber gelince uyar
+                            haberler.Add(deger + "\n"); // listeme ekle
+                            listBox1.Items.Add(deger); // list box a ekleme
+                            File.AppendAllText(@"D:\\Haberler.txt", deger + "\n");
+                    }
+                }
+
                 }
             }
 
             tur = 1; // ilk  veriler alındı
-            
+
         }
-        
+
 
         // butona tıklayınca 
         public void button1_Click(object sender, EventArgs e)
@@ -138,7 +148,7 @@ namespace vize
             if (boyut <= 5)
             {
                 listBox1.Font = new Font("Arial", 5);
-                if (boyut<5) // boyutu en az 5 olarak ayarlama ve Büyüt tusundaki hata düzeltmesi
+                if (boyut < 5) // boyutu en az 5 olarak ayarlama ve Büyüt tusundaki hata düzeltmesi
                 {
                     boyut = 5; // sayının azalmasını engelleme ve buyut tuşunun doğru çalışması
                 }
@@ -150,20 +160,6 @@ namespace vize
 
         }
 
-        
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-
-
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            dosyaolustur();
-        }
-
-
 
         // txt dosyasını oluştur
         public void dosyaolustur()
@@ -171,13 +167,16 @@ namespace vize
             String dosya = "D:\\Haberler.txt";
 
             if (File.Exists(dosya) == false) // daha onceden dosya var mı yok mu
-            { 
-            // varsayılan dosya ismi Haberler.txt
-            sw = File.CreateText("D:\\Haberler.txt"); // d klasoru altında haberler.txt
-            sw.Close(); // dosyayı kapat
+            {
+                // varsayılan dosya ismi Haberler.txt
+                sw = File.CreateText("D:\\Haberler.txt"); // d klasoru altında haberler.txt
+                sw.Close(); // dosyayı kapat
             }
         }
 
- 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            dosyaolustur();
+        }
     }
 }

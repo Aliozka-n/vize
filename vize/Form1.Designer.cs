@@ -93,7 +93,7 @@ namespace vize
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(192, 42);
             this.button2.TabIndex = 4;
-            this.button2.Text = "Son Yeni Haber";
+            this.button2.Text = "Son Haber";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -145,6 +145,7 @@ namespace vize
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
